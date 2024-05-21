@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:products_api/models/productData_model.dart';
+import 'package:products_api/models/products_model.dart';
 
 class ProductPage extends StatefulWidget {
-  String title;
-  String desc;
-  int price;
-  num discountPercentage;
-  num rating;
-  int stock;
-  String brand;
-  String category;
-  String thumbnail;
+  final ProductsModel mProductsData;
 
-  ProductPage({
-    super.key,
-    required this.title,
-    required this.desc,
-    required this.price,
-    required this.discountPercentage,
-    required this.rating,
-    required this.stock,
-    required this.brand,
-    required this.category,
-    required this.thumbnail,
-  });
+  ProductPage({super.key, required this.mProductsData});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -49,7 +32,7 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          widget.mProductsData.title.toString(),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -77,7 +60,8 @@ class _ProductPageState extends State<ProductPage> {
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(widget.thumbnail),
+                        image: NetworkImage(
+                            widget.mProductsData.thumbnail.toString()),
                         fit: BoxFit.cover)),
               ),
             ),
@@ -92,13 +76,13 @@ class _ProductPageState extends State<ProductPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.title,
+                            Text(widget.mProductsData.title.toString(),
                                 style: const TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold)),
                             Row(
                               children: [
                                 Text(
-                                    '\u{20B9}${widget.discountPercentage.toString()}',
+                                    '\u{20B9}${widget.mProductsData.price.toString()}',
                                     style: const TextStyle(
                                       fontSize: 19,
                                       fontWeight: FontWeight.w500,
@@ -106,7 +90,8 @@ class _ProductPageState extends State<ProductPage> {
                                       decoration: TextDecoration.lineThrough,
                                     )),
                                 const SizedBox(width: 8),
-                                Text('\u{20B9}${widget.price.toString()}',
+                                Text(
+                                    '\u{20B9}${widget.mProductsData.discountPercentage.toString()}',
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700,
@@ -121,7 +106,8 @@ class _ProductPageState extends State<ProductPage> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 21),
-                          child: Text(widget.desc,
+                          child: Text(
+                              widget.mProductsData.description.toString(),
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                   fontSize: 17,
@@ -130,13 +116,17 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       getContainer(
-                          title: 'Brand', value: widget.brand.toString()),
+                          title: 'Brand',
+                          value: widget.mProductsData.brand.toString()),
                       getContainer(
-                          title: 'Category', value: widget.category.toString()),
+                          title: 'Category',
+                          value: widget.mProductsData.category.toString()),
                       getContainer(
-                          title: 'Stock', value: widget.stock.toString()),
+                          title: 'Stock',
+                          value: widget.mProductsData.stock.toString()),
                       getContainer(
-                          title: 'Rating', value: widget.rating.toString()),
+                          title: 'Rating',
+                          value: widget.mProductsData.rating.toString()),
                     ],
                   ),
                 ),

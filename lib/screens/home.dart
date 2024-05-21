@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:products_api/models/productData_model.dart';
+import 'package:products_api/models/products_model.dart';
 import 'package:products_api/screens/product_details.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,65 +51,57 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text('Products'),
       ),
-      body: FutureBuilder(
-        future: _buildProductsData(),
-        builder: (_, snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snap.hasError) {
-            return Center(child: Text('Error: ${snap.hasError}'));
-          } else if (snap.hasData) {
-            return snap.data != null
-                ? snap.data!.products!.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: snap.data!.products!.length,
-                        itemBuilder: (_, childIndex) {
-                          var eachProducts = snap.data!.products![childIndex];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4),
-                            child: Card(
-                              elevation: 5,
-                              child: ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ProductPage(
-                                                title: eachProducts.title!,
-                                                desc: eachProducts.description!,
-                                                price: eachProducts.price!,
-                                                discountPercentage: eachProducts
-                                                    .discountPercentage!,
-                                                rating: eachProducts.rating!,
-                                                stock: eachProducts.stock!,
-                                                brand: eachProducts.brand!,
-                                                category:
-                                                    eachProducts.category!,
-                                            thumbnail: eachProducts.thumbnail!,
-                                              )));
-                                },
-                                leading: Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              eachProducts.thumbnail!),
-                                          fit: BoxFit.cover)),
+      body: SafeArea(
+        child: FutureBuilder(
+          future: _buildProductsData(),
+          builder: (_, snap) {
+            if (snap.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snap.hasError) {
+              return Center(child: Text('Error: ${snap.hasError}'));
+            } else if (snap.hasData) {
+              return snap.data != null
+                  ? snap.data!.products!.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: snap.data!.products!.length,
+                          itemBuilder: (_, childIndex) {
+                            var eachProducts = snap.data!.products![childIndex];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4),
+                              child: Card(
+                                elevation: 5,
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProductPage(
+                                                  mProductsData: eachProducts,
+                                                )));
+                                  },
+                                  leading: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                eachProducts.thumbnail!),
+                                            fit: BoxFit.cover)),
+                                  ),
+                                  title: Text(eachProducts.title!),
+                                  subtitle: Text(eachProducts.description!),
                                 ),
-                                title: Text(eachProducts.title!),
-                                subtitle: Text(eachProducts.description!),
                               ),
-                            ),
-                          );
-                        })
-                    : const Center(child: Text('No products found!!'))
-                : const Center(child: CircularProgressIndicator());
-          }
-          return Container();
-        },
+                            );
+                          })
+                      : const Center(child: Text('No products found!!'))
+                  : const Center(child: CircularProgressIndicator());
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
