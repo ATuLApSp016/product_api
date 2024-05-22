@@ -39,10 +39,10 @@ class _ProductPageState extends State<ProductPage> {
       body: SafeArea(
         child: Column(
           children: [
-            /* Expanded(
+             Expanded(
               child: PageView.builder(
                 controller: pageController,
-                itemCount: 5,
+                itemCount: widget.mProductsData.images!.length,
                 onPageChanged: (int index) {
                   setState(() {
                     currentIndex = index;
@@ -50,12 +50,13 @@ class _ProductPageState extends State<ProductPage> {
                 },
                 itemBuilder: (context, index) {
                   return Image.network(
-                    widget.images.toString(),
-                    fit: BoxFit.cover,
+                    widget.mProductsData.images![index].toString(),
+                    fit: BoxFit.fill,
                   );
                 },
               ),
-            ),*/
+            ),
+/*
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -65,6 +66,7 @@ class _ProductPageState extends State<ProductPage> {
                         fit: BoxFit.cover)),
               ),
             ),
+*/
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
